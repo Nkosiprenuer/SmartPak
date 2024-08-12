@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Plate Info</title>
+</head>
+<body>
+    <h1>Plate Information</h1>
+    {% if plate_info %}
+        <p>Plate Text: {{ plate_info[2] }}</p>
+        <p>Capture Date: {{ plate_info[4] }}</p>
+        <p>Capture Time: {{ plate_info[5] }}</p>
+        <p>Cost: {{ plate_info[6] }}</p>
+    {% else %}
+        <p>Plate not found in the database.</p>
+    {% endif %}
+    <form action="/plate_info" method="post">
+        <label for="plate_number">Enter Plate Number:</label>
+        <input type="text" id="plate_number" name="plate_number" required><br>
+        <button type="submit">Search</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+    <script>
+        function showHideFields() {
+            var paymentMethod = document.getElementById("payment_method").value;
+            var visaFields = document.getElementById("visa_fields");
+            var ecocashFields = document.getElementById("ecocash_fields");
+            
+            if (paymentMethod === "visa") {
+                visaFields.style.display = "block";
+                ecocashFields.style.display = "none";
+            } else if (paymentMethod === "ecocash") {
+                visaFields.style.display = "none";
+                ecocashFields.style.display = "block";
+            }
+        }
+
+        function sendPinRequest() {
+            var phoneNumber = document.getElementById("ecocash_phone_number").value;
+            // You can send an AJAX request or handle the message sending functionality here
+            alert("Request for pin sent to " + phoneNumber);
+        }
+    </script>
+</head>
+<body>
+    <h1>Payment Page</h1>
+    <p>This is the payment page. Please select your payment method.</p>
+    
+    <!-- Payment method selection form -->
+    <form action="/process_payment" method="POST" onsubmit="showHideFields()">
+        <label for="payment_method">Select Payment Method:</label>
+        <select name="payment_method" id="payment_method">
+            <option value="visa">Visa</option>
+            <option value="ecocash">Ecocash</option>
+        </select>
+        <br><br>
+
+        <!-- Visa payment fields -->
+        <div id="visa_fields" style="display: none;">
+            <!-- Include Visa payment fields here -->
+            <!-- Example: Card number, Expiry date, CVV -->
+            <label for="visa_card_number">Card Number:</label>
+            <input type="text" id="visa_card_number" name="visa_card_number">
+            <!-- Add more Visa payment fields as needed -->
+        </div>
+
+        <!-- Ecocash payment fields -->
+        <div id="ecocash_fields" style="display: none;">
+            <!-- Include Ecocash payment fields here -->
+            <!-- Example: Phone number -->
+            <label for="ecocash_phone_number">Phone Number:</label>
+            <input type="text" id="ecocash_phone_number" name="ecocash_phone_number">
+            <br><br>
+            <!-- Button to request PIN -->
+            <button type="button" onclick="sendPinRequest()">Request PIN</button>
+        </div>
+
+        <!-- Fake payment token -->
+        <input type="hidden" name="token" value="{{ fake_token }}">
+
+        <!-- Submit button -->
+        <input type="submit" value="Proceed with Payment">
+    </form>
+</body>
+</html>

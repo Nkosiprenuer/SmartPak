@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Captured Plate</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            margin-top: 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+        }
+        .back-btn {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>View Captured Plate</h1>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Plate Text</th>
+                <th>Capture Date</th>
+                <th>Capture Time</th>
+                <th>Cost</th>
+            </tr>
+            <tr>
+                <td>{{ plate_data[0] }}</td>
+                <td>{{ plate_data[1] }}</td>
+                <td>{{ plate_data[3] }}</td>
+                <td>{{ plate_data[4] }}</td>
+                <td>${{ plate_data[5] }}</td> <!-- Assuming cost is in USD -->
+            </tr>
+        </table>
+        <img src="data:image/jpeg;base64,{{ plate_data[2] }}" alt="Captured Plate">
+        <a href="/admin" class="back-btn">Back to Admin Panel</a>
+    </div>
+</body>
+</html>

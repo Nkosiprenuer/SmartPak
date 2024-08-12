@@ -1,0 +1,245 @@
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track License Plate</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+        
+        nav {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+        }
+        
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        nav ul li {
+            display: inline;
+        }
+        
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px;
+        }
+        
+        nav ul li a:hover {
+            background-color: #555;
+        }
+        
+        h1 {
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        form {
+            margin: 20px auto;
+            width: 50%;
+            text-align: center;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        input[type="text"] {
+            padding: 8px;
+            width: 60%;
+            font-size: 16px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        button:hover {
+            background-color: #555;
+        }
+        
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+        }
+        
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/admin">Admin Panel</a></li>
+            <li><a href="/track_plate">Track License Plate</a></li>
+        </ul>
+    </nav>
+    <h1>Track License Plate</h1>
+    <form action="/track_plate" method="POST">
+        <label for="plate_text">Enter Plate Text:</label>
+        <input type="text" id="plate_text" name="plate_text">
+        <button type="submit">Track</button>
+    </form>
+    {% if plate_data %}
+    <h2>Plate Information</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Plate Text</th>
+                <th>Capture Date</th>
+                <th>Capture Time</th>
+                <th>Cost</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in plate_data %}
+            <tr>
+                <td>{{ row[1] }}</td>
+                <td>{{ row[3] }}</td>
+                <td>{{ row[4] }}</td>
+                <td>${{ row[5] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+</body>
+</html>-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track License Plate</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        nav {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+        }
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px;
+        }
+        nav ul li a:hover {
+            background-color: #555;
+        }
+        h1 {
+            margin-top: 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/admin">Admin Panel</a></li>
+            <li><a href="/track_plate">Track License Plate</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h1>Track License Plate</h1>
+        <form method="POST">
+            <input type="text" name="plate_text" placeholder="Enter Plate Text" required>
+            <label for="start_date">Start Date:</label>
+            <input type="date" id="start_date" name="start_date">
+            <label for="end_date">End Date:</label>
+            <input type="date" id="end_date" name="end_date">
+            <button type="submit">Track</button>
+        </form>
+
+        {% if plate_data %}
+        <div>
+            <p>Total Paid: ${{ total_paid }}</p>
+            <p>Total Unpaid: ${{ total_unpaid }}</p>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Plate Text</th>
+                    <th>Capture Date</th>
+                    <th>Capture Time</th>
+                    <th>Cost</th>
+                    <th>Payment Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in plate_data %}
+                <tr>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[3] }}</td>
+                    <td>{{ row[4] }}</td>
+                    <td>${{ row[5] }}</td>
+                    <td>{{ row[6] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+</body>
+</html>

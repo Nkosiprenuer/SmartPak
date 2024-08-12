@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Parking Slots</title>
+</head>
+<body>
+    <h1>Available Parking Slots</h1>
+    {% for location, slots in available_slots.items() %}
+    <h2>{{ location }}</h2>
+    {% if slots %}
+    <ul>
+        {% for slot in slots %}
+        <li>{{ slot }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No available slots in this location.</p>
+    {% endif %}
+    {% endfor %}
+</body>
+</html>

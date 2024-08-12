@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make Payment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #011321;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button[type="submit"] {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .error {
+            color: red;
+            font-size: 0.9em;
+            display: none;
+        }
+    </style>
+    <script>
+        function validateForm() {
+            const cardNumber = document.getElementById('card_number').value;
+            const expiryDate = document.getElementById('expiry_date').value;
+            const cvv = document.getElementById('cvv').value;
+            const cardNumberRegex = /^\d{8,17}$/;
+            const expiryDateRegex = /^(0[1-9]|1[0-2])\/\d{4}$/;
+            const cvvRegex = /^\d{3}$/;
+
+            let isValid = true;
+
+            if (!cardNumberRegex.test(cardNumber)) {
+                document.getElementById('card_number_error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('card_number_error').style.display = 'none';
+            }
+
+            if (!expiryDateRegex.test(expiryDate)) {
+                document.getElementById('expiry_date_error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('expiry_date_error').style.display = 'none';
+            }
+
+            if (!cvvRegex.test(cvv)) {
+                document.getElementById('cvv_error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('cvv_error').style.display = 'none';
+            }
+
+            return isValid;
+        }
+    </script>
+</head>
+<body>
+    <h1>Make Payment for {{ plate_record[1] }}</h1>
+    <div class="container">
+        <form action="/make_payment" method="POST" onsubmit="return validateForm()">
+            <input type="hidden" name="plate_text" value="{{ plate_record[1] }}">
+            <label for="card_number">Card Number:</label>
+            <input type="text" id="card_number" name="card_number" required>
+            <div id="card_number_error" class="error">Card number must be between 8 and 17 digits.</div>
+            <label for="expiry_date">Expiry Date (MM/YYYY):</label>
+            <input type="text" id="expiry_date" name="expiry_date" required>
+            <div id="expiry_date_error" class="error">Expiry date must be in MM/YYYY format.</div>
+            <label for="cvv">CVV:</label>
+            <input type="text" id="cvv" name="cvv" required>
+            <div id="cvv_error" class="error">CVV must be exactly 3 digits.</div>
+            <label for="payment_amount">Payment Amount:</label>
+            <input type="number" id="payment_amount" name="payment_amount" step="0.01" max="{{ plate_record[7] }}" required><br>
+            <button type="submit">Submit Payment</button>
+        </form>
+    </div>
+</body>
+</html>

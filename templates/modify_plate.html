@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modify Captured Plate</title>
+</head>
+<body>
+    <h1>Modify Captured Plate</h1>
+    <!-- Form for modifying plate details -->
+    <form action="/confirm_modify" method="POST">
+        <input type="hidden" name="plate_id" value="{{ plate_data[0] }}">
+        <label for="plate_text">Plate Text:</label>
+        <input type="text" id="plate_text" name="plate_text" value="{{ plate_data[1] }}"><br><br>
+        <button type="submit">Save Changes</button>
+        <a href="/admin">Cancel</a>
+    </form>
+</body>
+</html>

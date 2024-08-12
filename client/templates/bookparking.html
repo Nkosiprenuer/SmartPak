@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parking Slot Booking</title>
+    <style>
+        /* Popup box styling */
+        .popup {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border: 2px solid #000;
+            z-index: 999;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Parking Slot Booking</h1>
+    <form action="/" method="POST">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name" required><br>
+        <label for="plate_number">Plate Number:</label><br>
+        <input type="text" id="plate_number" name="plate_number" required><br>
+        <label for="arrival_date">Arrival Date:</label><br>
+        <input type="date" id="arrival_date" name="arrival_date" required><br>
+        <label for="arrival_time">Arrival Time:</label><br>
+        <input type="time" id="arrival_time" name="arrival_time" required><br>
+        <label for="departure_date">Departure Date:</label><br>
+        <input type="date" id="departure_date" name="departure_date" required><br>
+        <label for="departure_time">Departure Time:</label><br>
+        <input type="time" id="departure_time" name="departure_time" required><br>
+        <label for="location">Location:</label><br>
+        <select id="location" name="location" required>
+            <option value="Bulawayo Centre">Bulawayo Centre</option>
+            <option value="Tower Block">Tower Block</option>
+            <option value="City Hall">City Hall</option>
+            <option value="Airport">Airport</option>
+        </select><br>
+        <label for="slot">Slot:</label><br>
+        <select id="slot" name="slot" required>
+            <!-- Slots will be dynamically populated based on location selected using JavaScript -->
+        </select><br>
+        <label for="cost">Cost:</label><br>
+        <input type="text" id="cost" name="cost" readonly><br>
+        <button type="submit">Book Parking</button>
+    </form>
+
+    <div id="popup" class="popup">
+        <p id="popup-message"></p>
+        <button id="popup-okay">OK</button>
+    </div>
+
+    <button id="view-parking">View Booked Parking</button>
+    <button id="view-available-parking">View Available Parking</button> <!-- Added button -->
+
+    <script>
+        // Show popup message
+        function showPopup(message) {
+            document.getElementById('popup-message').textContent = message;
+            document.getElementById('popup').style.display = 'block';
+        }
+
+        // Hide popup message
+        function hidePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+
+        // Listen for click on "OK" button to hide popup
+        document.getElementById('popup-okay').addEventListener('click', hidePopup);
+
+        const locationSelect = document.getElementById('location');
+        const slotSelect = document.getElementById('slot');
+        const slotsByLocation = {
+            'Bulawayo Centre': ['B1', 'B2', 'B3', 'B5'],
+            'Tower Block': ['T1', 'T2', 'T3', 'T4'],
+            'City Hall': ['C1', 'C2', 'C3', 'C4'],
+            'Airport' :['E1','E2','E3','E4','E5']
+        };
+
+        locationSelect.addEventListener('change', () => {
+            const location = locationSelect.value;
+            slotSelect.innerHTML = ''; // Clear previous options
+            slotsByLocation[location].forEach(slot => {
+                const option = document.createElement('option');
+                option.value = slot;
+                option.textContent = slot;
+                slotSelect.appendChild(option);
+            });
+        });
+
+        function calculateCost() {
+            const arrivalDate = new Date(document.getElementById('arrival_date').value);
+            const arrivalTime = document.getElementById('arrival_time').value.split(':');
+            arrivalDate.setHours(parseInt(arrivalTime[0]));
+            arrivalDate.setMinutes(parseInt(arrivalTime[1]));
+
+            const departureDate = new Date(document.getElementById('departure_date').value);
+            const departureTime = document.getElementById('departure_time').value.split(':');
+            departureDate.setHours(parseInt(departureTime[0]));
+            departureDate.setMinutes(parseInt(departureTime[1]));
+
+            const durationMs = departureDate - arrivalDate;
+            const durationHours = durationMs / (1000 * 60 * 60);
+            const cost = durationHours * 1; // $1/hr
+            document.getElementById('cost').value = '$' + cost.toFixed(2);
+        }
+
+        document.getElementById('arrival_date').addEventListener('change', calculateCost);
+        document.getElementById('arrival_time').addEventListener('change', calculateCost);
+        document.getElementById('departure_date').addEventListener('change', calculateCost);
+        document.getElementById('departure_time').addEventListener('change', calculateCost);
+        
+        // Initially populate slots based on the default location
+        const initialLocation = locationSelect.value;
+        slotsByLocation[initialLocation].forEach(slot => {
+            const option = document.createElement('option');
+            option.value = slot;
+            option.textContent = slot;
+            slotSelect.appendChild(option);
+        });
+
+        // View Booked Parking button functionality
+        document.getElementById('view-parking').addEventListener('click', function() {
+            window.location.href = '/admin';
+        });
+
+        // View Available Parking button functionality
+        document.getElementById('view-available-parking').addEventListener('click', function() {
+            window.location.href = '/available-parking';
+        });
+
+        // Display flash messages in the popup
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    showPopup('{{ message }}');
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </script>
+</body>
+</html>

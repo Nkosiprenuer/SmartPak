@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parking Report</title>
+</head>
+<body>
+    <h1>Parking Report</h1>
+    <div id="parking-reports"></div>
+
+    <script>
+        fetch('/parking-reports')
+            .then(response => response.json())
+            .then(data => {
+                const reportsDiv = document.getElementById('parking-reports');
+                data.forEach(report => {
+                    reportsDiv.innerHTML += `<p>Vehicle Number: ${report.vehicle_number}, Entry Time: ${report.entry_time}, Exit Time: ${report.exit_time}, Amount: ${report.amount}</p>`;
+                });
+            })
+            .catch(error => console.error('Error fetching parking reports:', error));
+    </script>
+</body>
+</html>

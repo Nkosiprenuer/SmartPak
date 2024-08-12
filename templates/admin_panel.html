@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <style>
+        nav {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px;
+        }
+
+        nav ul li a:hover {
+            background-color: #555;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .action-buttons button {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/admin">Admin Panel</a></li>
+            <li><a href="/track_plate">Track License Plate</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </nav>
+    <h1>Admin Panel</h1>
+    <form method="POST" action="/admin">
+        <label for="start_date">Start Date:</label>
+        <input type="date" id="start_date" name="start_date">
+        <label for="end_date">End Date:</label>
+        <input type="date" id="end_date" name="end_date">
+        <button type="submit">Filter</button>
+    </form>
+
+    <div>
+        <p>Total Paid: ${{ total_paid }}</p>
+        <p>Total Unpaid: ${{ total_unpaid }}</p>
+    </div>
+
+    <table id="data-table">
+        <thead>
+            <tr>
+                <th>Plate Text</th>
+                <th>Capture Date</th>
+                <th>Capture Time</th>
+                <th>Cost</th>
+                <th>Payment Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr>
+                <td>{{ row[1] }}</td>
+                <td>{{ row[3] }}</td>
+                <td>{{ row[4] }}</td>
+                <td>${{ row[5] }}</td>
+                <td>{{ row[6] }}</td>
+                <td class="action-buttons">
+                    <form action="/view_plate" method="POST" style="display: inline;">
+                        <input type="hidden" name="plate_id" value="{{ row[0] }}">
+                        <button type="submit">View</button>
+                    </form>
+                    <form action="/modify_plate" method="POST" style="display: inline;">
+                        <input type="hidden" name="plate_id" value="{{ row[0] }}">
+                        <button type="submit">Edit</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

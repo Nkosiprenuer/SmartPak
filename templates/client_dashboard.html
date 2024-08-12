@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Dashboard</title>
+</head>
+<body>
+    <h1>Welcome to Your Dashboard</h1>
+    <p>Here are your records:</p>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Plate ID</th>
+                <th>Plate Text</th>
+                <!-- Add more table headers as needed -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in data %}
+            <tr>
+                <td>{{ record[0] }}</td> <!-- Assuming ID is the first column -->
+                <td>{{ record[1] }}</td> <!-- Assuming plate text is the second column -->
+                <!-- Add more table cells for additional columns -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <a href="/logout">Logout</a>
+</body>
+</html>
